@@ -145,17 +145,7 @@ nav a:hover{
 
 <body>
 
-<header>
-    <div class="logo">
-        <img src="{{ asset('images/logo-polibatam.png') }}">
-    </div>
-    <nav>
-        <a href="/">Beranda</a>
-        <a href="/faq">FAQ</a>
-        <a href="/kuesioner">Kuesioner</a>
-        <a href="/helpdesk" class="btn-helpdesk">Helpdesk</a>
-    </nav>
-</header>
+@include('layouts.header')
 
 <section class="main-container">
 

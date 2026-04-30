@@ -139,19 +139,8 @@
     </head>
     <body>
 
-    <header>
-        <div class="logo">
-            <img src="{{ asset('images/logo-polibatam.png') }}" alt="Logo">
-        </div>
-
-        <nav>
-            <a href="#" class="active">Beranda</a>
-            <a href="#">FAQ</a>
-            <a href="#">Kuesioner</a>
-            <a href="#" class="btn-daftar">Helpdesk</a>
-        </nav>
-    </header>
-
+    @include('layouts.header')
+    
     <section class="title">
         <h1>Frequently Asked Questions (FAQ)</h1>
     </section>

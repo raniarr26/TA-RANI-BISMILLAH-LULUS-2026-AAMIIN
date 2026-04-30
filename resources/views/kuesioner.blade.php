@@ -142,18 +142,7 @@ th, td{
 
 <body>
 
-<header>
-    <div class="logo">
-        <img src="{{ asset('images/logo-polibatam.png') }}">
-    </div>
-
-    <nav>
-        <a href="/">Beranda</a>
-        <a href="/faq">FAQ</a>
-        <a href="/kuesioner" class="active">Kuesioner</a>
-        <a href="/helpdesk" class="btn-helpdesk">Helpdesk</a>
-    </nav>
-</header>
+@include('layouts.header')
 
 <section class="title">
     <h1>Kuesioner Layanan Penerimaan Mahasiswa Baru</h1>
