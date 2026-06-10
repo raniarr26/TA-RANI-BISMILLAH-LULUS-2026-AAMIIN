@@ -1,10 +1,10 @@
-    <!DOCTYPE html>
-    <html lang="id">
-    <head>
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FAQ</title>
-
     <style>
         * {
             margin: 0;
@@ -14,62 +14,9 @@
         }
 
         body {
-            background-color: #f4f8ff;
+            background: #f4f8ff;
         }
 
-        /* ===== NAVBAR ===== */
-        header {
-            background-color: #0d47a1;
-            padding: 0 60px;
-            height: 80px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        /* Logo */
-        .logo img {
-            height: 55px;
-            width: auto;
-        }
-
-        /* Navigation */
-        nav {
-            display: flex;
-            align-items: center;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: white;
-            margin-left: 30px;
-            font-weight: 500;
-            transition: 0.3s;
-        }
-
-        nav a:hover {
-            color: #bbdefb;
-        }
-
-        .active {
-            border-bottom: 2px solid white;
-            padding-bottom: 4px;
-        }
-
-        /* Button Daftar */
-        .btn-daftar {
-            background-color: white;
-            color: #0d47a1 !important;
-            padding: 8px 18px;
-            border-radius: 6px;
-            font-weight: 600;
-        }
-
-        .btn-daftar:hover {
-            background-color: #e3f2fd;
-        }
-
-        /* ===== TITLE ===== */
         .title {
             text-align: center;
             margin: 60px 0 40px;
@@ -77,30 +24,27 @@
 
         .title h1 {
             color: #0d47a1;
-            font-size: px;
+            font-size: 32px;
         }
-        /* ===== LAYOUT KIRI KANAN ===== */
-         ..wrapper{
-    display:flex;
-    gap:40px;
-    align-items:flex-start; /* biar sejajar atas */
-    padding:40px 60px;
-         }
 
-         /* gambar kanan */
+        .wrapper {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+            padding: 40px 60px;
+        }
+
         .visual {
-            width:40%;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-        }
-        .visual img {
-            flex:1;
-            width:100%;
-            max-width:350px;
+            width: 40%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* ===== FAQ ===== */
+        .visual img {
+            width: 100%;
+            max-width: 350px;
+        }
 
         .faq-container {
             flex: 2;
@@ -112,7 +56,7 @@
             background: white;
             margin-bottom: 15px;
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
 
@@ -131,88 +75,60 @@
             display: none;
             padding: 15px;
             background: #f4f8ff;
+            line-height: 1.8;
         }
 
-
-        
+        @media(max-width: 950px) {
+            .wrapper {
+                flex-direction: column;
+                padding: 30px;
+            }
+            .visual {
+                width: 100%;
+            }
+            .faq-container {
+                width: 100%;
+            }
+        }
     </style>
-    </head>
-    <body>
+</head>
 
-    @include('layouts.header')
-    
-    <section class="title">
-        <h1>Frequently Asked Questions (FAQ)</h1>
-    </section>
+<body>
 
-    <section class="wrapper">
+@include('layouts.header')
 
+<section class="title">
+    <h1>Frequently Asked Questions (FAQ)</h1>
+</section>
+
+<section class="wrapper">
     <section class="faq-container">
-
+        @foreach($faq as $item)
         <div class="faq-item">
-            <button class="faq-question">Apa saja syarat pendaftaran PMB?</button>
+            <button class="faq-question">{{ $item->pertanyaan }}</button>
             <div class="faq-answer">
-                <p>Syarat pendaftaran meliputi ijazah SMA/SMK, KTP, pas foto, dan mengisi formulir online.</p>
+                <p>{{ $item->jawaban }}</p>
             </div>
         </div>
+        @endforeach
+    </section>
 
-        <div class="faq-item">
-            <button class="faq-question">Berapa biaya pendaftaran?</button>
-            <div class="faq-answer">
-                <p>Biaya pendaftaran sebesar Rp250.000 dan dibayarkan melalui bank mitra.</p>
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <button class="faq-question">Bagaimana cara memilih jurusan?</button>
-            <div class="faq-answer">
-                <p>Kamu bisa memilih jurusan saat mengisi formulir pendaftaran online.</p>
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <button class="faq-question">Kapan pengumuman hasil seleksi?</button>
-            <div class="faq-answer">
-                <p>Pengumuman hasil seleksi akan diumumkan di website resmi PMB.</p>
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <button class="faq-question">Kapan pengumuman hasil seleksi?</button>
-            <div class="faq-answer">
-                <p>Pengumuman hasil seleksi akan diumumkan di website resmi PMB.</p>
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <button class="faq-question">Kapan pengumuman hasil seleksi?</button>
-            <div class="faq-answer">
-                <p>Pengumuman hasil seleksi akan diumumkan di website resmi PMB.</p>
-            </div>
-        </div>
-
-    <!-- Gambar kanan -->
-         <div class="visual">
+    <div class="visual">
         <img src="{{ asset('images/faq-mahasiswa.png') }}">
-        </div>
+    </div>
+</section>
 
-    </section>
-    </section>
+@include('layouts.footer')
 
-    <script>
+<script>
     const questions = document.querySelectorAll(".faq-question");
-
     questions.forEach(q => {
         q.addEventListener("click", () => {
             const answer = q.nextElementSibling;
-            answer.style.display =
-                answer.style.display === "block" ? "none" : "block";
+            answer.style.display = answer.style.display === "block" ? "none" : "block";
         });
     });
-    </script>
+</script>
 
-    </body>
-    </html>
-
-    </body>
-    </html>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Informasi;
+use App\Models\Prodi;
+use App\Models\Faq;
+use App\Models\Jalur;
+
+class HomeController extends Controller
+{
+public function index(Request $request)
+{
+
+    $informasi = Informasi::where(
+        'status',
+        'Aktif'
+    )->latest()->get();
+
+    $faq = Faq::where(
+        'status',
+        'Aktif'
+    )->latest()->get();
+
+    $search = $request->search;
+
+    $prodis = collect();
+
+    $jalurs = collect();
+
+     $informasiSearch = collect();
+
+        if($search){
+
+    $prodis = Prodi::where(
+        'nama_prodi',
+        'like',
+        "%{$search}%"
+    )->get();
+
+    $jalurs = Jalur::where(
+        'nama_jalur',
+        'like',
+        "%{$search}%"
+    )->get();
+
+    $informasiSearch = Informasi::where(
+        'judul',
+        'like',
+        "%{$search}%"
+    )->get();
+
+}
+
+    return view(
+        'beranda',
+        compact(
+            'informasi',
+            'prodis',
+            'faq',
+            'search',
+            'jalurs',
+            'informasiSearch'
+        )
+    );
+
+}
+}

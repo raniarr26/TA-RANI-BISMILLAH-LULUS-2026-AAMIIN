@@ -15,6 +15,9 @@ class Informasi extends Model
         'judul',
         'deskripsi',
         'kategori',
-        'status'
+        'status',
+        'foto',
+        'file_pdf'
+
     ];
 }

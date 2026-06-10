@@ -1,188 +1,306 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin - Kelola FAQ</title>
+@extends('layouts.admin')
+
+@section('content')
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
-}
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', sans-serif;
+    }
 
-body{
-    background:#f4f8ff;
-}
+    .content {
+        padding: 40px;
+    }
 
-/* ===== SIDEBAR ===== */
-.sidebar{
-    width:260px;
-    height:100vh;
-    position:fixed;
-    top:0;
-    left:0;
-    background:#1f4fa3;
-    color:white;
-    padding-top:40px;
-}
+    .content h1 {
+        margin-bottom: 30px;
+        color: #0d47a1;
+        font-size: 34px;
+    }
 
-.admin-profile{
-    text-align:center;
-    margin-bottom:40px;
-}
+    .add-btn {
+        margin-bottom: 20px;
+        padding: 12px 22px;
+        background: #1565c0;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 15px;
+        transition: .3s;
+    }
 
-.admin-profile img{
-    width:80px;
-    height:80px;
-    border-radius:50%;
-    display:block;
-    margin:0 auto 10px;
-    background:white;
-}
+    .add-btn:hover {
+        background: #0d47a1;
+    }
 
-.sidebar a{
-    display:block;
-    padding:15px 30px;
-    color:white;
-    text-decoration:none;
-}
+    .table-container {
+        background: white;
+        padding: 25px;
+        border-radius: 18px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        overflow-x: auto;
+    }
 
-.sidebar a:hover{
-    background:#2d66c3;
-}
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
 
-/* ===== MAIN ===== */
-.main{
-    margin-left:260px;
-    padding:40px;
-}
+    th {
+        background: #1565c0;
+        color: white;
+        padding: 14px;
+        text-align: center;
+        font-size: 15px;
+    }
 
-.main h1{
-    font-size:32px;
-     color:#0d47a1;
-    margin-bottom:30px;
-}
+    td {
+        padding: 14px;
+        border: 1px solid #eee;
+        text-align: center;
+        font-size: 14px;
+        vertical-align: middle;
+    }
 
-/* ===== BUTTON ===== */
-.add-btn{
-    margin-bottom:20px;
-    padding:10px 20px;
-    background:#1565c0;
-    color:white;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-}
+    tr:hover {
+        background: #f4f8ff;
+    }
 
-/* ===== TABLE ===== */
-.table-container{
-    background:white;
-    padding:20px;
-    border-radius:10px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.1);
-}
+    .left {
+        text-align: left;
+    }
 
-table{
-    width:100%;
-    border-collapse:collapse;
-}
+    .empty {
+        text-align: center;
+        padding: 20px;
+        color: #777;
+    }
 
-th{
-    background:#1565c0;
-    color:white;
-    padding:15px;
-    text-align:left;
-}
+    .action-group {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        align-items: center;
+    }
 
-td{
-    padding:15px;
-    border-bottom:1px solid #ddd;
-}
+    .btn-edit {
+        background: #ffc107;
+        color: #333;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 12px;
+    }
 
-.action-btn{
-    padding:6px 12px;
-    border:none;
-    border-radius:6px;
-    cursor:pointer;
-    margin-right:5px;
-}
+    .btn-edit:hover {
+        background: #e0a800;
+    }
 
-.edit-btn{
-    background:#ffc107;
-}
+    .btn-delete {
+        background: #dc3545;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 12px;
+    }
 
-.delete-btn{
-    background:#dc3545;
-    color:white;
-}
+    .btn-delete:hover {
+        background: #c82333;
+    }
+
+    /* Modal */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    .modal-content {
+        background: white;
+        width: 500px;
+        padding: 30px;
+        border-radius: 12px;
+        position: relative;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .close-btn {
+        position: absolute;
+        right: 18px;
+        top: 12px;
+        font-size: 28px;
+        font-weight: bold;
+        color: #333;
+        cursor: pointer;
+    }
+
+    .close-btn:hover {
+        color: #dc3545;
+    }
+
+    .modal-content h2 {
+        color: #1f4fa3;
+        margin-bottom: 20px;
+    }
+
+    .modal-content input,
+    .modal-content textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 14px;
+        margin-bottom: 15px;
+        outline: none;
+    }
+
+    .modal-content input:focus,
+    .modal-content textarea:focus {
+        border-color: #1565c0;
+    }
+
+    .modal-content textarea {
+        height: 120px;
+        resize: vertical;
+    }
+
+    .save-btn {
+        width: 100%;
+        padding: 12px;
+        background: #1565c0;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 15px;
+        transition: .3s;
+    }
+
+    .save-btn:hover {
+        background: #0d47a1;
+    }
 </style>
-</head>
 
-<body>
-
-<!-- SIDEBAR -->
-<div class="sidebar">
-    <div class="admin-profile">
-        <img src="{{ asset('images/profile.png') }}">
-        <p>Admin 1</p>
-    </div>
-
-    <a href="/admin/dashboard">Dashboard</a>
-    <a href="#">Kelola Informasi</a>
-    <a href="/admin/faq">Kelola FAQ</a>
-    <a href="/admin/kuesioner">Kelola Kuesioner</a>
-    <a href="#">Logout</a>
-</div>
-
-<!-- MAIN -->
-<div class="main">
-
+<div class="content">
     <h1>Kelola Frequently Asked Questions (FAQ)</h1>
 
-    <!-- TOMBOL TAMBAH -->
-    <button class="add-btn">+ Tambah FAQ</button>
+    <button class="add-btn" onclick="openModal()">+ Tambah FAQ</button>
 
-    <!-- TABEL FAQ -->
     <div class="table-container">
-
         <table>
             <thead>
                 <tr>
-                    <th>Pertanyaan</th>
-                    <th>Jawaban</th>
-                    <th>Aksi</th>
+                    <th width="8%">No</th>
+                    <th width="35%">Pertanyaan</th>
+                    <th width="37%">Jawaban</th>
+                    <th width="20%">Aksi</th>
                 </tr>
             </thead>
-
             <tbody>
-
+                @forelse($data as $item)
                 <tr>
-                    <td>Apa saja syarat pendaftaran PMB?</td>
-                    <td>Ijazah, KTP, pas foto, dan isi formulir online.</td>
+                    <td>{{ $loop->iteration }}</td>
+                    <td class="left">{{ $item->pertanyaan }}</td>
+                    <td class="left">{{ $item->jawaban }}</td>
                     <td>
-                        <button class="action-btn edit-btn">Edit</button>
-                        <button class="action-btn delete-btn">Hapus</button>
+                        <div class="action-group">
+                            <button type="button" class="btn-edit" onclick='openEditModal(
+                                {{ json_encode($item->id) }},
+                                {{ json_encode($item->pertanyaan) }},
+                                {{ json_encode($item->jawaban) }}
+                            )'>Edit</button>
+                            <form action="/faq/delete/{{ $item->id }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus FAQ ini?')" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn-delete">Hapus</button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
-
+                @empty
                 <tr>
-                    <td>Berapa biaya pendaftaran?</td>
-                    <td>Rp250.000 melalui bank mitra.</td>
-                    <td>
-                        <button class="action-btn edit-btn">Edit</button>
-                        <button class="action-btn delete-btn">Hapus</button>
-                    </td>
+                    <td colspan="4" class="empty">📊 Belum ada data FAQ</td>
                 </tr>
-
+                @endforelse
             </tbody>
         </table>
-
     </div>
-
 </div>
 
-</body>
-</html>
+<!-- Modal Tambah -->
+<div id="modalFaq" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h2>Tambah FAQ</h2>
+        <form action="/faq/store" method="POST">
+            @csrf
+            <input type="text" name="pertanyaan" placeholder="Masukkan pertanyaan" required>
+            <textarea name="jawaban" placeholder="Masukkan jawaban" required></textarea>
+            <input type="hidden" name="status" value="Aktif">
+            <button type="submit" class="save-btn">Simpan FAQ</button>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Edit -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeEditModal()">&times;</span>
+        <h2>Edit FAQ</h2>
+        <form id="editForm" method="POST">
+            @csrf
+            @method('PUT')
+            <input type="text" name="pertanyaan" id="editPertanyaan" required>
+            <textarea name="jawaban" id="editJawaban" required></textarea>
+            <button type="submit" class="save-btn">Update FAQ</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openModal() {
+        document.getElementById('modalFaq').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('modalFaq').style.display = 'none';
+    }
+
+    function openEditModal(id, pertanyaan, jawaban) {
+        document.getElementById('editModal').style.display = 'flex';
+        document.getElementById('editPertanyaan').value = pertanyaan ?? '';
+        document.getElementById('editJawaban').value = jawaban ?? '';
+        document.getElementById('editForm').action = '/faq/update/' + id;
+    }
+
+    function closeEditModal() {
+        document.getElementById('editModal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('modalFaq');
+        const editModal = document.getElementById('editModal');
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+        if (event.target == editModal) {
+            editModal.style.display = 'none';
+        }
+    }
+</script>
+
+@endsection
