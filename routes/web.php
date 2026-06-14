@@ -65,13 +65,12 @@ Route::get('/helpdesk', [HelpdeskController::class, 'index']);
 Route::post('/helpdesk/store', [HelpdeskController::class, 'store']);
 Route::get('/helpdesk/detail/{id}', [HelpdeskController::class, 'detail']);
 Route::post('/helpdesk/reply/{id}', [HelpdeskController::class, 'reply']);
-Route::post('/helpdesk/close/{id}', [HelpdeskController::class, 'close']);
 
 // ================= HELPDESK ADMIN =================
 Route::get('/admin/helpdesk', [HelpdeskController::class, 'admin']);
 Route::get('/admin/helpdesk/detail/{id}', [HelpdeskController::class, 'adminDetail']);
-Route::post('/admin/helpdesk/reply/{id}', [HelpdeskController::class, 'balas']);
- // → pakai ini
+Route::post('/admin/helpdesk/balas/{id}', [HelpdeskController::class, 'balas']);
+Route::post('/admin/helpdesk/close/{id}', [HelpdeskController::class, 'close']);
 
 // ================= ABOUT US =================
 Route::get('/about', function () {return view('about');})->name('about');

@@ -164,6 +164,23 @@
         .preview-link:hover {
             text-decoration: underline;
         }
+
+        .success-alert {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .closed-info {
+            margin-top: 15px;
+            padding: 12px;
+            background: #e8f5e9;
+            border-radius: 8px;
+            color: #2e7d32;
+            line-height: 1.6;
+        }
     </style>
 </head>
 
@@ -172,6 +189,12 @@
 
     <section class="container">
         <div class="title">
+            @if(session('success'))
+                <div class="success-alert">
+                    {{ session('success') }}
+                </div>
+            @endif
+
             <h1>Detail Helpdesk</h1>
             <p>Riwayat percakapan helpdesk</p>
         </div>
@@ -194,7 +217,14 @@
             @else
                 <span style="color:green;">Closed</span>
             @endif
+
             <br><br>
+
+            <strong>ID Tiket :</strong>
+            #{{ $data->id }}
+
+            <br><br>
+
             <strong>Dibuat :</strong> {{ $data->created_at->format('d-m-Y H:i:s') }}
         </div>
 
@@ -242,18 +272,6 @@
             @endforeach
         </div>
 
-        @if($data->status == 'Dijawab')
-            <div style="margin-bottom:20px;">
-                <form action="/helpdesk/close/{{ $data->id }}" method="POST">
-                    @csrf
-                    <button type="submit"
-                        style="background:#dc3545; color:white; border:none; padding:12px 20px; border-radius:8px; cursor:pointer;">
-                        ✓ Tutup Tiket
-                    </button>
-                </form>
-            </div>
-        @endif
-
         @if($data->status != 'Closed')
             <div class="chat-box reply-box">
                 <form action="/helpdesk/reply/{{ $data->id }}" method="POST">
@@ -264,6 +282,15 @@
                     <textarea name="pesan" placeholder="Tulis pesan kembali ke admin..." required></textarea>
                     <button type="submit" class="reply-btn">Kirim Pesan</button>
                 </form>
+            </div>
+        @endif
+
+        @if($data->status == 'Closed')
+            <div class="closed-info">
+                🔒 Tiket telah ditutup oleh Admin PMB.<br>
+                Permasalahan dianggap telah selesai.<br><br>
+                Jika masih terdapat kendala baru,<br>
+                silakan membuat tiket Helpdesk baru.
             </div>
         @endif
     </section>

@@ -38,7 +38,7 @@ linear-gradient(
 rgba(13,71,161,.75),
 rgba(13,71,161,.75)
 ),
-url('{{ asset("images/polibatam.jpg") }}');
+url('{{ asset("images/bg-polibatam.jpg") }}');
 
 background-size:cover;
 background-position:center;
@@ -536,12 +536,10 @@ About Us
 
 <p>
 
-Pusat Informasi PMB
+Pusat Layanan Informasi
 Politeknik Negeri Batam
 
-Menyediakan layanan informasi
-penerimaan mahasiswa baru secara
-cepat, akurat dan terintegrasi.
+Satu Klik untuk Semua Informasi Polibatam
 
 </p>
 
@@ -584,23 +582,11 @@ Apa itu Pusat Informasi Polibatam?
 
 <p>
 
-Pusat Informasi PMB merupakan
-media layanan informasi digital
-yang membantu calon mahasiswa
-memperoleh informasi mengenai
-Program Studi, Jalur Pendaftaran,
-FAQ, Kuesioner, serta layanan
-Helpdesk Politeknik Negeri Batam.
-
-</p>
-
-<p>
-
-Sistem ini dikembangkan untuk
-memberikan akses informasi yang
-lebih cepat, mudah, dan terintegrasi
-bagi calon mahasiswa dalam proses
-penerimaan mahasiswa baru.
+Pusat Layanan Informasi Politeknik Negeri Batam
+ adalah layanan yang berfungsi sebagai pusat
+  penyedia informasi resmi terkait kegiatan,
+   layanan, dan penerimaan mahasiswa baru di
+    Politeknik Negeri Batam.
 
 </p>
 

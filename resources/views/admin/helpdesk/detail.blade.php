@@ -198,9 +198,30 @@
     .close-modal:hover {
         color: #ccc;
     }
+
+    .btn-close {
+        background: #dc3545;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: .3s;
+    }
+
+    .btn-close:hover {
+        background: #c82333;
+    }
 </style>
 
 <div class="title">
+    @if(session('success'))
+        <div style="background:#d4edda; color:#155724; padding:15px; border-radius:10px; margin-bottom:20px;">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <h1>Detail Helpdesk</h1>
     <p>Riwayat percakapan user dan admin</p>
 </div>
@@ -217,6 +238,9 @@
     </div>
     <div class="info-item">
         <strong>Kategori :</strong> {{ $data->kategori }}
+    </div>
+    <div class="info-item">
+        <strong>Dibuat :</strong> {{ $data->created_at->format('d-m-Y H:i:s') }}
     </div>
     <div class="info-item">
         <strong>Status :</strong>
@@ -277,6 +301,13 @@
     @endforeach
 </div>
 
+@if($data->status === 'Dijawab')
+    <form action="/admin/helpdesk/close/{{ $data->id }}" method="POST" style="margin-bottom:20px;">
+        @csrf
+        <button type="submit" class="btn-close">Close Ticket</button>
+    </form>
+@endif
+
 @if($data->status != 'Closed')
     <div class="reply-box">
         <form action="/admin/helpdesk/balas/{{ $data->id }}" method="POST">
@@ -287,7 +318,11 @@
     </div>
 @else
     <div class="reply-box" style="text-align:center; background:#f8f9fa;">
-        <p style="color:#666;">✖ Tiket ini sudah ditutup. Tidak bisa membalas pesan lagi.</p>
+        <p style="color:#666; font-size:15px;">
+            🔒 Tiket telah ditutup oleh Admin PMB.
+            <br><br>
+            Percakapan tidak dapat dilanjutkan.
+        </p>
     </div>
 @endif
 

@@ -494,7 +494,6 @@ footer {
 <section class="section">
     <div class="section-title">
         <h2>Informasi Umum</h2>
-        <p>Informasi Umum Mengenai</p>
     </div>
     <div class="card-container">
         @foreach($informasi as $item)

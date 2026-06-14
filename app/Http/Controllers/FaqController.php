@@ -108,8 +108,8 @@ class FaqController extends Controller
         $faq = Faq::where(
             'status',
             'Aktif'
-        )->latest()->get();
-
+        )->orderBy('created_at', 'asc')->get(); // ASCENDING = lama ke baru
+        
         $prodis = Prodi::all();
 
         return view(

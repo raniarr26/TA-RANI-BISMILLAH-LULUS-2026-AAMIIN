@@ -33,72 +33,56 @@ class HelpdeskController extends Controller
     // =========================
 
     public function store(Request $request)
-{
-    $request->validate([
+    {
+        $request->validate([
 
-        'nama' => 'required|max:100|regex:/^[a-zA-Z\s]+$/',
+            'nama' => 'required|max:100|regex:/^[a-zA-Z\s]+$/',
+            'email' => 'required|email',
+            'nohp' => 'required|numeric|digits_between:10,15',
+            'kategori' => 'required',
+            'pesan' => 'required|min:3',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:5120'
 
-        'email' => 'required|email',
+        ]);
 
-        'nohp' => 'required|numeric|digits_between:10,15',
+        $foto = null;
 
-        'kategori' => 'required',
+        if ($request->hasFile('foto')) {
 
-        'pesan' => 'required|min:3',
+            $file = $request->file('foto');
+            $foto = time().'_'.$file->getClientOriginalName();
+            $file->move(
+                public_path('uploads/helpdesk'),
+                $foto
+            );
+        }
 
-        'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:5120'
+        $helpdesk = Helpdesk::create([
 
-    ]);
+            'nama' => $request->nama,
+            'email' => $request->email,
+            'nohp' => $request->nohp,
+            'kategori' => $request->kategori,
+            'pesan' => $request->pesan,
+            'status' => 'Pending',
+            'foto' => $foto
 
-    $foto = null;
+        ]);
 
-    if ($request->hasFile('foto')) {
+        HelpdeskChat::create([
 
-        $file = $request->file('foto');
+            'helpdesk_id' => $helpdesk->id,
+            'sender' => 'user',
+            'message' => $request->pesan,
+            'foto' => $foto
 
-        $foto = time().'_'.$file->getClientOriginalName();
+        ]);
 
-        $file->move(
-            public_path('uploads/helpdesk'),
-            $foto
+        return back()->with(
+            'success',
+            'Tiket berhasil dikirim'
         );
     }
-
-    $helpdesk = Helpdesk::create([
-
-        'nama' => $request->nama,
-
-        'email' => $request->email,
-
-        'nohp' => $request->nohp,
-
-        'kategori' => $request->kategori,
-
-        'pesan' => $request->pesan,
-
-        'status' => 'Pending',
-
-        'foto' => $foto
-
-    ]);
-
-    HelpdeskChat::create([
-
-        'helpdesk_id' => $helpdesk->id,
-
-        'sender' => 'user',
-
-        'message' => $request->pesan,
-
-        'foto' => $foto
-
-    ]);
-
-    return back()->with(
-        'success',
-        'Tiket berhasil dikirim'
-    );
-}
 
     // =========================
     // DETAIL USER
@@ -107,8 +91,7 @@ class HelpdeskController extends Controller
     public function detail($id)
     {
 
-        $data = Helpdesk::find($id);
-
+        $data = Helpdesk::findOrFail($id);
         $chats = HelpdeskChat::where(
             'helpdesk_id',
             $id
@@ -117,7 +100,6 @@ class HelpdeskController extends Controller
         return view(
 
             'detail-helpdesk',
-
             compact(
                 'data',
                 'chats'
@@ -142,7 +124,6 @@ class HelpdeskController extends Controller
         return view(
 
             'admin.helpdesk.index',
-
             compact('data')
 
         );
@@ -156,8 +137,7 @@ class HelpdeskController extends Controller
     public function adminDetail($id)
     {
 
-        $data = Helpdesk::find($id);
-
+        $data = Helpdesk::findOrFail($id);
         $chats = HelpdeskChat::where(
             'helpdesk_id',
             $id
@@ -166,7 +146,6 @@ class HelpdeskController extends Controller
         return view(
 
             'admin.helpdesk.detail',
-
             compact(
                 'data',
                 'chats'
@@ -177,103 +156,83 @@ class HelpdeskController extends Controller
     }
 
     // =========================
-    // BALAS HELPDESK
+    // BALAS HELPDESK (ADMIN REPLY)
     // =========================
 
-    public function balas(
-    Request $request,
-    $id
-    ){
+    public function balas(Request $request, $id)
+    {
+        // Validasi balasan admin
+        $request->validate([
+            'balasan' => 'required|min:3'
+        ]);
 
-        $helpdesk = Helpdesk::find($id);
+        $helpdesk = Helpdesk::findOrFail($id);
 
         // ===== CHAT ADMIN =====
-
         HelpdeskChat::create([
-
-            'helpdesk_id' =>
-            $helpdesk->id,
-
-            'sender' =>
-            'admin',
-
-            'message' =>
-            $request->balasan
-
+            'helpdesk_id' => $helpdesk->id,
+            'sender' => 'admin',
+            'message' => $request->balasan
         ]);
 
         // ===== UPDATE STATUS =====
-
         $helpdesk->update([
-
-            'status' =>
-            'Dijawab'
-
+            'status' => 'Dijawab'
         ]);
 
         // ===== KIRIM EMAIL =====
-
-         Mail::to($helpdesk->email)
+        Mail::to($helpdesk->email)
          ->send(
              new HelpdeskReplyMail($helpdesk)
          );
 
-        return redirect(
-            '/admin/helpdesk'
+        return redirect('/admin/helpdesk')->with(
+            'success',
+            'Balasan berhasil dikirim ke ' . $helpdesk->email
         );
-
     }
 
     // =========================
     // USER REPLY
     // =========================
 
-    public function reply(
-    Request $request,
-    $id
-    ){
+    public function reply(Request $request, $id)
+    {
+        // Validasi balasan user
+        $request->validate([
+            'pesan' => 'required|min:3'
+        ]);
 
         HelpdeskChat::create([
-
-            'helpdesk_id' =>
-            $id,
-
-            'sender' =>
-            'user',
-
-            'message' =>
-            $request->pesan
-
+            'helpdesk_id' => $id,
+            'sender' => 'user',
+            'message' => $request->pesan
         ]);
 
-        Helpdesk::find($id)->update([
-
-            'status' =>
-            'Pending'
-
+        Helpdesk::findOrFail($id)->update([
+            'status' => 'Pending'
         ]);
 
-        return back();
-
+        return back()->with(
+            'success',
+            'Pesan berhasil dikirim ke admin'
+        );
     }
 
+    // =========================
+    // CLOSE TICKET (ADMIN)
+    // =========================
+
     public function close($id)
-{
+    {
+        Helpdesk::findOrFail($id)->update([
+            'status' => 'Closed'
+        ]);
 
-    Helpdesk::find($id)->update([
-
-        'status' => 'Closed'
-
-    ]);
-
-    return back()->with(
-
-        'success',
-
-        'Tiket berhasil ditutup'
-
-    );
-
-}
+        return back()->with(
+            'success',
+            'Tiket berhasil ditutup'
+        );
+    }
 
 }

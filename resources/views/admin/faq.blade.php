@@ -63,6 +63,9 @@
         text-align: center;
         font-size: 14px;
         vertical-align: middle;
+        white-space: normal;
+        word-wrap: break-word;
+        max-width: 500px;
     }
 
     tr:hover {
@@ -71,6 +74,7 @@
 
     .left {
         text-align: left;
+        line-height: 1.6;
     }
 
     .empty {
@@ -176,6 +180,7 @@
     .modal-content textarea {
         height: 120px;
         resize: vertical;
+        line-height: 1.5;
     }
 
     .save-btn {
@@ -249,7 +254,7 @@
         <form action="/faq/store" method="POST">
             @csrf
             <input type="text" name="pertanyaan" placeholder="Masukkan pertanyaan" required>
-            <textarea name="jawaban" placeholder="Masukkan jawaban" required></textarea>
+            <textarea name="jawaban" placeholder="Masukkan jawaban (bisa beberapa kalimat/baris)" required></textarea>
             <input type="hidden" name="status" value="Aktif">
             <button type="submit" class="save-btn">Simpan FAQ</button>
         </form>

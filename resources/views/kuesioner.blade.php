@@ -211,7 +211,7 @@ th, td{
             <tbody>
                 <tr>
                     <td>1</td>
-                    <td class="question-col">Bagaimana kualitas pelayanan informasi PMB?</td>
+                    <td class="question-col">Bagaimana kualitas pelayanan informasi ?</td>
                     <td><input type="radio" name="q1" value="Sangat Baik" required></td>
                     <td><input type="radio" name="q1" value="Baik"></td>
                     <td><input type="radio" name="q1" value="Cukup"></td>
@@ -228,6 +228,22 @@ th, td{
                 <tr>
                     <td>3</td>
                     <td class="question-col">Seberapa cepat respon layanan Helpdesk?</td>
+                    <td><input type="radio" name="q3" value="Sangat Baik" required></td>
+                    <td><input type="radio" name="q3" value="Baik"></td>
+                    <td><input type="radio" name="q3" value="Cukup"></td>
+                    <td><input type="radio" name="q3" value="Kurang"></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td class="question-col">Layanan informasi pada website memberikan jawaban yang relevan dengan pertanyaan?</td>
+                    <td><input type="radio" name="q3" value="Sangat Baik" required></td>
+                    <td><input type="radio" name="q3" value="Baik"></td>
+                    <td><input type="radio" name="q3" value="Cukup"></td>
+                    <td><input type="radio" name="q3" value="Kurang"></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td class="question-col">Informasi mengenai program studi dan jalur masuk yang tersedia sudah lengkap?</td>
                     <td><input type="radio" name="q3" value="Sangat Baik" required></td>
                     <td><input type="radio" name="q3" value="Baik"></td>
                     <td><input type="radio" name="q3" value="Cukup"></td>
